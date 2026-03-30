@@ -12,6 +12,7 @@ This root folder is a **git repository** itself, but contains no source code —
 │   ├── quarkus/                 # primary repo
 │   ├── hibernate-orm/
 │   ├── hibernate-reactive/
+│   ├── hibernate-tools/
 │   ├── quarkus-wiki/            # reference only, lives only in main/
 │   └── .m2/                     # pre-built SNAPSHOTs, always fresh
 ├── 3223/                        # feature QUARKUS-3223
@@ -32,6 +33,7 @@ All repos follow the same remote convention:
 | quarkus              | `git@github.com:quarkusio/quarkus.git`                | `git@github.com:$GITHUB_USERNAME/quarkus.git`               |
 | hibernate-orm        | `git@github.com:hibernate/hibernate-orm.git`          | `git@github.com:$GITHUB_USERNAME/hibernate-orm.git`         |
 | hibernate-reactive   | `git@github.com:hibernate/hibernate-reactive.git`     | `git@github.com:$GITHUB_USERNAME/hibernate-reactive.git`    |
+| hibernate-tools      | `git@github.com:hibernate/hibernate-tools.git`        | `git@github.com:$GITHUB_USERNAME/hibernate-tools.git`       |
 | quarkus-wiki         | TBD                                                   | TBD                                                    |
 
 ## The `main/` folder

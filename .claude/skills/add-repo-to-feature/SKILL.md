@@ -14,6 +14,7 @@ Adds a worktree of the specified repository to an existing feature directory.
 
 - `hibernate-orm`
 - `hibernate-reactive`
+- `hibernate-tools`
 
 ## Prerequisites
 
