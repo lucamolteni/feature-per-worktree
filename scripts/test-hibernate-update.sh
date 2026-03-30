@@ -12,7 +12,19 @@ if [ -z "$1" ]; then
 fi
 
 WORKSPACE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-QUARKUS_DIR="$WORKSPACE_ROOT/$1/quarkus"
+if [ "$1" = "." ]; then
+    # Resolve current directory, then walk up to find the feature root (parent of quarkus/)
+    FEATURE_DIR="$(pwd)"
+    while [ "$FEATURE_DIR" != "$WORKSPACE_ROOT" ] && [ "$FEATURE_DIR" != "/" ]; do
+        if [ -d "$FEATURE_DIR/quarkus" ]; then
+            break
+        fi
+        FEATURE_DIR="$(dirname "$FEATURE_DIR")"
+    done
+else
+    FEATURE_DIR="$WORKSPACE_ROOT/$1"
+fi
+QUARKUS_DIR="$FEATURE_DIR/quarkus"
 
 if [ ! -d "$QUARKUS_DIR" ]; then
     echo "ERROR: $QUARKUS_DIR does not exist"
