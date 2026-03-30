@@ -8,6 +8,9 @@ M2_DIR="$MAIN_DIR/.m2"
 log() { echo "[$(date '+%H:%M:%S')] $*"; }
 fail() { log "ERROR: $1"; exit 1; }
 
+trap 'echo ""; log "Interrupted (Ctrl+C). Exiting."; exit 130' INT
+trap 'log "Terminated (SIGHUP/Ctrl+D or terminal closed). Exiting."; exit 143' HUP
+
 # Verify workspace exists
 [[ -d "$MAIN_DIR" ]] || fail "main/ directory not found at $MAIN_DIR"
 
@@ -93,12 +96,12 @@ refresh_cycle() {
 
     if [[ -s "$before" && -s "$after" ]]; then
         local changed
-        changed=$(diff "$before" "$after" | grep '^[><]' | wc -l)
+        changed=$(diff "$before" "$after" | grep -c '^[><]' || true)
         log "Changed/new jars: $changed"
         log "Sample updated jars:"
         diff "$before" "$after" | grep '^>' | head -5 | while read -r line; do
             log "  ${line#> }"
-        done
+        done || true
     fi
     log ""
 }
