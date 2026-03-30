@@ -85,6 +85,16 @@ This is critical: if Maven silently falls back to `~/.m2`, the entire isolation 
 4. **refresh-main** — Bash script for hourly cron: fetches upstream, resets all repos to upstream/main, rebuilds Quarkus into `main/.m2`.
 5. **delete-feature** — Cleans up worktrees (via `git worktree remove`) and deletes the feature directory + its `.m2`.
 
+## Shell Aliases
+
+Add to `~/.zshrc`:
+
+```bash
+alias local_repo='echo ">>> maven.repo.local: $(mvn help:evaluate -Dexpression=settings.localRepository -q -DforceStdout 2>/dev/null)"'
+```
+
+Run `local_repo` from any Maven project directory to print the effective local repository path. Must be run from within a directory that has a `pom.xml` (or a parent with one).
+
 ## Git Structure of This Repo
 
 This root directory (`~/git/hibernate/`) is its own git repo containing:
