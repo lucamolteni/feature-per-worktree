@@ -29,9 +29,9 @@ All repos follow the same remote convention:
 
 | Repo                 | upstream (read-only)                                  | origin (fork)                                          |
 |----------------------|-------------------------------------------------------|--------------------------------------------------------|
-| quarkus              | `git@github.com:quarkusio/quarkus.git`                | `git@github.com:lucamolteni/quarkus.git`               |
-| hibernate-orm        | `git@github.com:hibernate/hibernate-orm.git`          | `git@github.com:lucamolteni/hibernate-orm.git`         |
-| hibernate-reactive   | `git@github.com:hibernate/hibernate-reactive.git`     | `git@github.com:lucamolteni/hibernate-reactive.git`    |
+| quarkus              | `git@github.com:quarkusio/quarkus.git`                | `git@github.com:$GITHUB_USERNAME/quarkus.git`               |
+| hibernate-orm        | `git@github.com:hibernate/hibernate-orm.git`          | `git@github.com:$GITHUB_USERNAME/hibernate-orm.git`         |
+| hibernate-reactive   | `git@github.com:hibernate/hibernate-reactive.git`     | `git@github.com:$GITHUB_USERNAME/hibernate-reactive.git`    |
 | quarkus-wiki         | TBD                                                   | TBD                                                    |
 
 ## The `main/` folder

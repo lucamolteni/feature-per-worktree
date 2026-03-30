@@ -13,9 +13,9 @@ Initialize the `~/git/hibernate/main/` directory with all repositories and a pre
 1. Create `main/` directory if it doesn't exist.
 
 2. Clone each repository into `main/`:
-   - `git clone git@github.com:lucamolteni/quarkus.git main/quarkus`
-   - `git clone git@github.com:lucamolteni/hibernate-orm.git main/hibernate-orm`
-   - `git clone git@github.com:lucamolteni/hibernate-reactive.git main/hibernate-reactive`
+   - `git clone git@github.com:$GITHUB_USERNAME/quarkus.git main/quarkus`
+   - `git clone git@github.com:$GITHUB_USERNAME/hibernate-orm.git main/hibernate-orm`
+   - `git clone git@github.com:$GITHUB_USERNAME/hibernate-reactive.git main/hibernate-reactive`
    - Clone quarkus-wiki (URL TBD)
 
 3. For each cloned repo, add the upstream remote:
@@ -33,7 +33,7 @@ Initialize the `~/git/hibernate/main/` directory with all repositories and a pre
 
 6. Set up `.mvn/maven.config` in `main/quarkus/` with:
    ```
-   -Dmaven.repo.local=/Users/lmolteni/git/hibernate/main/.m2
+   -Dmaven.repo.local=$HOME/git/hibernate/main/.m2
    ```
 
 7. Set up `.mvn/maven.config` in all other repos in `main/` with the same `.m2` path.

@@ -37,7 +37,7 @@ Adds a worktree of the specified repository to an existing feature directory.
 3. **Set up Maven config** in the worktree:
    Create `~/git/hibernate/<number>/<repo>/.mvn/maven.config` with:
    ```
-   -Dmaven.repo.local=/Users/lmolteni/git/hibernate/<number>/.m2
+   -Dmaven.repo.local=$HOME/git/hibernate/<number>/.m2
    ```
    If `.mvn/maven.config` already exists (from the repo), prepend the line.
 
