@@ -34,17 +34,17 @@ Each entry is built from:
 
 Entries include enough prose to understand the problem context a month later. No bold, no italics, no code blocks. Only headings and unordered bullet lists.
 
-Each entry starts with an ISO datetime heading. Bullets can be one or two sentences describing what was going on. Multiple calls on the same day produce separate entries with different timestamps, all in the same file, newest at the top.
+Each entry starts with a datetime heading (YYYY-MM-DD HH:MM format with a space separator). Bullets can be one or two sentences describing what was going on. Multiple calls on the same day produce separate entries with different timestamps, all in the same file, newest at the top.
 
 Example of a day file with two entries:
 
 ```
-## 2026-04-01T16:45
+## 2026-04-01 16:45
 
 - Found the root cause of the flaky ORM batch insert test. H2 uses READ_COMMITTED by default but the test assumed REPEATABLE_READ. Fixed by explicitly setting the isolation level in the test configuration.
 - commit: def5678 - Fix flaky batch insert test isolation level
 
-## 2026-04-01T14:32
+## 2026-04-01 14:32
 
 - The reactive session was leaking connections when a timeout occurred during a batch insert. The connection pool would fill up after ~50 requests under load. Root cause was that the timeout handler was closing the statement but not releasing the connection back to the pool.
 - commit: abc1234 - Fix connection pool not releasing on timeout
@@ -116,7 +116,7 @@ After `/delete-feature 3223`:
 
 These apply to all journal content (daily entries and summaries):
 
-- No bold, no italics, no code blocks in prose
+- No bold, no italics, no code blocks, no emoji in prose
 - Only headings and unordered bullet lists
 - Terse but substantive: enough context to understand the problem, not just a list of actions
 - No AI slop: no filler phrases, no unnecessary padding
