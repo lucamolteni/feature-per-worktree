@@ -1,0 +1,37 @@
+---
+name: today-journal
+description: Use when the user wants a quick two-line summary of today's work from journal entries
+---
+
+# Today Journal
+
+Usage: `/today-journal`
+
+Produces a two-line summary of today's work across all features.
+
+## Steps
+
+1. Determine today's date:
+   ```bash
+   date "+%Y-%m-%d"
+   ```
+
+2. Scan all feature directories under `~/git/hibernate/` for today's journal. Check every directory that has a `journal/` subfolder:
+   ```bash
+   find ~/git/hibernate -maxdepth 2 -type d -name journal
+   ```
+   Then check each for a `YYYY-MM-DD.md` file matching today's date.
+
+3. Read all matching journal files. If none exist, say so and stop.
+
+4. Produce two or three bullet points summarizing the entire day's work across all features. The summary should:
+   - Cover all entries from all features, not just the latest one
+   - Be concrete: mention what was built, fixed, refactored, or discovered
+   - If multiple features had work, cover both
+
+5. Copy the two-line summary to the clipboard:
+   ```bash
+   echo "<summary>" | pbcopy
+   ```
+
+6. Print the summary and confirm it was copied to the clipboard.
