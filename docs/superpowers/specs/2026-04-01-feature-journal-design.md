@@ -1,13 +1,14 @@
 # Feature Journal
 
-Daily work journal for feature branches, archived when features are deleted.
+Daily work journal for feature branches, archived when features are deleted. The `journal/` directory at the workspace root is tracked in git.
 
 ## Skills
 
-Two skills are involved:
+Three skills are involved:
 
 1. `/write-journal` — new skill, creates/updates daily journal entries
 2. `/delete-feature` — existing skill, modified to archive the journal before deletion
+3. `/create-feature` — existing skill, modified to initialize the journal directory
 
 ## /write-journal
 
@@ -19,25 +20,30 @@ Auto-detects which feature is active by examining:
 
 - Current working directory
 - Conversation context and recent commands
-- If ambiguous, asks the user
+- If ambiguous or if no feature context is found, asks the user
 
 ### Entry sources
 
 Each entry is built from:
 
 - Session context and conversation memory: what problems were investigated, what was tried, what was learned
-- Git commits on the feature branch(es) as milestones
+- Git commits on the feature branch(es) as milestones (short hash, commit message)
 - User-provided text (optional argument)
 
 ### Entry format
 
 Entries include enough prose to understand the problem context a month later. No bold, no italics, no code blocks. Only headings and unordered bullet lists.
 
-Each entry starts with an ISO datetime heading. Bullets can be one or two sentences describing what was going on.
+Each entry starts with an ISO datetime heading. Bullets can be one or two sentences describing what was going on. Multiple calls on the same day produce separate entries with different timestamps, all in the same file, newest at the top.
 
-Example:
+Example of a day file with two entries:
 
 ```
+## 2026-04-01T16:45
+
+- Found the root cause of the flaky ORM batch insert test. H2 uses READ_COMMITTED by default but the test assumed REPEATABLE_READ. Fixed by explicitly setting the isolation level in the test configuration.
+- commit: def5678 - Fix flaky batch insert test isolation level
+
 ## 2026-04-01T14:32
 
 - The reactive session was leaking connections when a timeout occurred during a batch insert. The connection pool would fill up after ~50 requests under load. Root cause was that the timeout handler was closing the statement but not releasing the connection back to the pool.
@@ -48,8 +54,16 @@ Example:
 ### File location
 
 - Writes to `<feature>/journal/YYYY-MM-DD.md`
-- If the file already exists, prepends the new entry at the top (newest first)
+- If the file already exists, prepends the new entry at the top (newest first), separated by a blank line
 - If the file does not exist, creates it
+
+## /create-feature modification
+
+When `/create-feature` creates a new feature directory, it also creates the empty `journal/` subdirectory:
+
+```
+mkdir -p ~/git/hibernate/<feature>/journal
+```
 
 ## /delete-feature modifications
 
@@ -58,7 +72,7 @@ Before deleting the feature directory, the existing `/delete-feature` skill gain
 1. Create `~/git/hibernate/journal/<feature>/events/`
 2. Move all day files from `<feature>/journal/*.md` into `journal/<feature>/events/`
 3. Generate `~/git/hibernate/journal/<feature>/summary-<feature>.md`
-4. Commit the archived journal to git
+4. Commit the archived journal with message: `Archive journal for feature <feature>`
 
 ### Summary file
 
@@ -66,6 +80,7 @@ Before deleting the feature directory, the existing `/delete-feature` skill gain
 
 - A short narrative intro: what the feature was about, when work started and ended
 - A condensed milestone list: key decisions, breakthroughs, final outcome
+- Aim for under 20 bullets regardless of how long the feature lasted
 
 Same formatting rules: headings and bullet lists only, no bold, no italics.
 
