@@ -17,9 +17,14 @@ This root folder is a **git repository** itself, but contains no source code —
 ├── 3223/                        # feature QUARKUS-3223
 │   ├── quarkus/                 # worktree from main/quarkus, branch QUARKUS-3223
 │   ├── hibernate-orm/           # worktree, added on demand
-│   └── .m2/                     # seeded from ~/.m2 via hardlinks
+│   ├── .m2/                     # seeded from ~/.m2 via hardlinks
+│   └── journal/                 # daily work journal
 ├── 4567/                        # another feature
 │   └── ...
+├── journal/                     # archived journals from completed features
+│   └── 3223/
+│       ├── events/              # daily journal files
+│       └── summary-3223.md      # condensed summary
 ```
 
 ## Repositories
@@ -79,7 +84,8 @@ Feature worktrees must be configured so Maven **never** reads from or writes to 
 2. **create-feature** — e.g., "create feature 3223" → creates `3223/` dir, Quarkus worktree on branch `QUARKUS-3223`, seeds `.m2` from `~/.m2/repository` via hardlinks, sets up `.mvn/maven.config`.
 3. **add-repo-to-feature** — e.g., "add hibernate-orm to 3223" → creates worktree in `3223/hibernate-orm/` from `main/hibernate-orm`.
 4. **refresh-main** — Bash script for hourly loop: fetches upstream, resets all repos to upstream/main, rebuilds Quarkus into `~/.m2`.
-5. **delete-feature** — Cleans up worktrees (via `git worktree remove`) and deletes the feature directory + its `.m2`.
+5. **delete-feature** — Cleans up worktrees (via `git worktree remove`) and deletes the feature directory + its `.m2`. Archives the journal to `journal/<feature>/` before deletion.
+6. **write-journal** — e.g., "/write-journal" → appends a daily journal entry for the current feature, capturing session context and git commits.
 
 ## Shell Aliases
 
