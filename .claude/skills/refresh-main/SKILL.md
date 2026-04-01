@@ -24,7 +24,7 @@ Creates and runs a long-running bash script that keeps `main/` in sync with upst
 2. **Build Quarkus** (only Quarkus, not the other repos):
    ```bash
    cd ~/git/hibernate/main/quarkus
-   mvn clean install -DskipTests
+   ~/git/hibernate/scripts/build-fast.sh
    ```
 
 3. **Log** the timestamp and build result.

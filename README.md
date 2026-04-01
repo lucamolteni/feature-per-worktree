@@ -55,7 +55,7 @@ A background script (`scripts/refresh-main.sh`) keeps `main/` in sync: fetch ups
 ## Prerequisites
 
 - Java (JDK 17+)
-- Maven and Gradle
+- mvnd (Maven Daemon) and Gradle
 - Git
 - `$GITHUB_USERNAME` environment variable set to your GitHub username (for fork URLs)
 - Forks of the upstream repositories under your GitHub account

@@ -45,8 +45,8 @@ All repos follow the same remote convention:
 - Always tracks `upstream/main` — reset hourly via a bash script.
 - hibernate-orm and hibernate-reactive use Gradle. Their SNAPSHOTs are built via `./gradlew publishToMavenLocal -x test`.
 - Uses the global `~/.m2/repository` — no `-Dmaven.repo.local` override needed. `main/` is the source of truth and doesn't need isolation.
-- **Refresh script** is a long-running bash script (not a cron job). When executed, it loops: fetches upstream, resets all repos to `upstream/main`, rebuilds Quarkus (`mvn clean install -DskipTests`), then sleeps for 1 hour and repeats. The user decides when to start/stop it.
-- Quarkus build takes ~7 minutes. `~/.m2` must always be ready for comparison.
+- **Refresh script** is a long-running bash script (not a cron job). When executed, it loops: fetches upstream, resets all repos to `upstream/main`, rebuilds Quarkus (`scripts/build-fast.sh`), then sleeps for 1 hour and repeats. The user decides when to start/stop it.
+- Quarkus build uses `mvnd` (Maven Daemon) for faster parallel builds. `~/.m2` must always be ready for comparison.
 
 ## Feature directories (e.g. `3223/`)
 
@@ -92,10 +92,18 @@ Feature worktrees must be configured so Maven **never** reads from or writes to 
 Add to `~/.zshrc`:
 
 ```bash
+alias build-fast="~/git/hibernate/scripts/build-fast.sh"
+alias build-docs="~/git/hibernate/scripts/build-docs.sh"
+alias format="~/git/hibernate/scripts/format.sh"
 alias local_repo='echo ">>> maven.repo.local: $(mvn help:evaluate -Dexpression=settings.localRepository -q -DforceStdout 2>/dev/null)"'
+alias qss="java -jar ${HOME}/git/quarkus/devtools/cli/target/quarkus-cli-999-SNAPSHOT-runner.jar"
 ```
 
-Run `local_repo` from any Maven project directory to print the effective local repository path. Must be run from within a directory that has a `pom.xml` (or a parent with one).
+- `build-fast` — full Quarkus build skipping tests, docs, and non-essential steps
+- `build-docs` — build with docs but skip tests
+- `format` — run source formatting only
+- `local_repo` — print the effective Maven local repository path (uses `mvn`, not `mvnd` — mvnd doesn't support `-q -DforceStdout` for `help:evaluate`)
+- `qss` — run Quarkus CLI from local SNAPSHOT build
 
 ## Git Structure of This Repo
 

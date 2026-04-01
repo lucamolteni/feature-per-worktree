@@ -59,7 +59,7 @@ Creates a feature directory with a Quarkus worktree and an isolated `.m2` seeded
 7. **Build Quarkus** into the feature's `.m2`:
    ```
    cd ~/git/hibernate/<name>/quarkus
-   ./mvnw -T1C clean install -DskipTests -Dno-format
+   ~/git/hibernate/scripts/build-fast.sh
    ```
    (The `-Dmaven.repo.local` is already set via `.mvn/maven.config`.)
 

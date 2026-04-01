@@ -41,7 +41,7 @@ Initialize the `~/git/hibernate/main/` directory with all repositories and a pre
 8. Build Quarkus into the local `.m2`:
    ```
    cd main/quarkus
-   mvn clean install -DskipTests
+   ~/git/hibernate/scripts/build-fast.sh
    ```
 
 9. Verify the build succeeded and `main/.m2/` contains `io/quarkus/` artifacts.

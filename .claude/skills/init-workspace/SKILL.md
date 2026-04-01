@@ -36,7 +36,7 @@ Initialize the `~/git/hibernate/main/` directory with all repositories. Builds i
 7. Build Quarkus into `~/.m2`:
    ```
    cd main/quarkus
-   mvn clean install -DskipTests
+   ~/git/hibernate/scripts/build-fast.sh
    ```
 
 8. Build hibernate-orm SNAPSHOTs (Gradle project):

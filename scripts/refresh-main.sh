@@ -43,9 +43,9 @@ build_gradle_repo() {
 build_quarkus() {
     local dir="$MAIN_DIR/quarkus"
 
-    log "Building Quarkus (mvn install -DskipTests)..."
+    log "Building Quarkus (build-fast)..."
     cd "$dir"
-    ./mvnw -T1C clean install -DskipTests -Dno-format
+    "$SCRIPT_DIR/build-fast.sh"
     log "Quarkus installed to ~/.m2/repository"
 }
 
