@@ -105,6 +105,32 @@ alias qss="java -jar ${HOME}/git/quarkus/devtools/cli/target/quarkus-cli-999-SNA
 - `local_repo` — print the effective Maven local repository path (uses `mvn`, not `mvnd` — mvnd doesn't support `-q -DforceStdout` for `help:evaluate`)
 - `qss` — run Quarkus CLI from local SNAPSHOT build
 
+## Why Claude Runs From the Root Directory
+
+Claude is always launched from `~/git/hibernate/` (not from inside a repo). This is intentional:
+
+- **Cross-repo access**: Features often span multiple repos (e.g., Quarkus + Hibernate ORM). Running from the root means Claude can read and edit files across all of them without switching directories.
+- **Source code is always available**: All repos are checked out as full source trees under `main/` and feature directories. **Never unzip or extract JAR files to read source code** — the actual `.java` files are already on disk. For example, to understand a Hibernate ORM class, read `main/hibernate-orm/...` or `<feature>/hibernate-orm/...` directly, don't look inside `.m2` artifacts.
+- **Maven isolation awareness**: When running builds or Maven commands, always `cd` into the specific worktree first. The `.mvn/maven.config` in each worktree ensures the correct local repo is used.
+
+## Reading Source Code: Use the Repos, Not JARs
+
+When investigating how something works — a Quarkus extension, a Hibernate class, a dependency — **always read the source from the checked-out repositories first**:
+
+- `main/quarkus/` — upstream Quarkus source
+- `main/hibernate-orm/` — upstream Hibernate ORM source
+- `main/hibernate-reactive/` — upstream Hibernate Reactive source
+- `main/hibernate-tools/` — upstream Hibernate Tools source
+- `<feature>/quarkus/` — feature branch Quarkus source
+- `<feature>/hibernate-orm/` — feature branch Hibernate ORM source (if added)
+
+**Do NOT**:
+- Extract or unzip JAR files from `.m2` to read class files
+- Use `jar tf` or `unzip` to inspect artifacts when the source repo is available
+- Decompile `.class` files when the `.java` source is right there in the worktree
+
+The only time JAR inspection is appropriate is for third-party dependencies that are not checked out locally (e.g., a library not in this workspace).
+
 ## Git Structure of This Repo
 
 This root directory (`~/git/hibernate/`) is its own git repo containing:
