@@ -13,6 +13,7 @@ This root folder is a **git repository** itself, but contains no source code —
 │   ├── hibernate-orm/
 │   ├── hibernate-reactive/
 │   ├── hibernate-tools/
+│   ├── hibernate-models/
 │   └── quarkus-wiki/            # reference only, lives only in main/
 ├── 3223/                        # feature QUARKUS-3223
 │   ├── quarkus/                 # worktree from main/quarkus, branch QUARKUS-3223
@@ -37,13 +38,14 @@ All repos follow the same remote convention:
 | hibernate-orm        | `git@github.com:hibernate/hibernate-orm.git`          | `git@github.com:$GITHUB_USERNAME/hibernate-orm.git`         |
 | hibernate-reactive   | `git@github.com:hibernate/hibernate-reactive.git`     | `git@github.com:$GITHUB_USERNAME/hibernate-reactive.git`    |
 | hibernate-tools      | `git@github.com:hibernate/hibernate-tools.git`        | `git@github.com:$GITHUB_USERNAME/hibernate-tools.git`       |
+| hibernate-models     | `git@github.com:hibernate/hibernate-models.git`       | `git@github.com:$GITHUB_USERNAME/hibernate-models.git`      |
 | quarkus-wiki         | TBD                                                   | TBD                                                    |
 
 ## The `main/` folder
 
 - Contains the "real" clones of all repos (not worktrees).
 - Always tracks `upstream/main` — reset hourly via a bash script.
-- hibernate-orm and hibernate-reactive use Gradle. Their SNAPSHOTs are built via `./gradlew publishToMavenLocal -x test`.
+- hibernate-orm, hibernate-reactive, and hibernate-models use Gradle. Their SNAPSHOTs are built via `./gradlew publishToMavenLocal -x test`. In feature directories, always pass `-Dmaven.repo.local=<feature>/.m2` so Gradle resolves and publishes to the feature's isolated local repo (e.g., `./gradlew publishToMavenLocal -x test -Dmaven.repo.local=/Users/lmolteni/git/hibernate/3223/.m2`).
 - Uses the global `~/.m2/repository` — no `-Dmaven.repo.local` override needed. `main/` is the source of truth and doesn't need isolation.
 - **Refresh script** is a long-running bash script (not a cron job). When executed, it loops: fetches upstream, resets all repos to `upstream/main`, rebuilds Quarkus (`scripts/build-fast.sh`), then sleeps for 1 hour and repeats. The user decides when to start/stop it.
 - Quarkus build uses `mvnd` (Maven Daemon) for faster parallel builds. `~/.m2` must always be ready for comparison.
@@ -121,8 +123,10 @@ When investigating how something works — a Quarkus extension, a Hibernate clas
 - `main/hibernate-orm/` — upstream Hibernate ORM source
 - `main/hibernate-reactive/` — upstream Hibernate Reactive source
 - `main/hibernate-tools/` — upstream Hibernate Tools source
+- `main/hibernate-models/` — upstream Hibernate Models source
 - `<feature>/quarkus/` — feature branch Quarkus source
 - `<feature>/hibernate-orm/` — feature branch Hibernate ORM source (if added)
+- `<feature>/hibernate-models/` — feature branch Hibernate Models source (if added)
 
 **Do NOT**:
 - Extract or unzip JAR files from `.m2` to read class files
