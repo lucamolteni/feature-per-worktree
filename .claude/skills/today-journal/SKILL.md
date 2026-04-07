@@ -20,16 +20,16 @@ Produces a two-line summary of today's work across all features.
    - **Active features**: check `~/git/hibernate/*/journal/YYYY-MM-DD.md`
    - **Archived journals**: check `~/git/hibernate/journal/*/events/YYYY-MM-DD.md`
    ```bash
-   find ~/git/hibernate -maxdepth 2 -path '*/journal/*.md' -name "$(date +%Y-%m-%d).md"
+   find ~/git/hibernate -maxdepth 3 -path '*/journal/*.md' -name "$(date +%Y-%m-%d).md"
    find ~/git/hibernate/journal -maxdepth 3 -path '*/events/*.md' -name "$(date +%Y-%m-%d).md"
    ```
 
 3. Read all matching journal files. If none exist, say so and stop.
 
-4. Produce two or three bullet points summarizing the entire day's work across all features. The summary should:
+4. Produce the summary **grouped by feature**, with a few bullet points per feature. The summary should:
+   - Have a header per feature (e.g., "QUARKUS-48005", "QUARKUS-53413", or the archived feature name)
    - Cover all entries from all features, not just the latest one
    - Be concrete: mention what was built, fixed, refactored, or discovered
-   - If multiple features had work, cover both
 
 5. Copy the two-line summary to the clipboard:
    ```bash

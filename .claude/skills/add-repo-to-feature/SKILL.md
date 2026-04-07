@@ -15,6 +15,7 @@ Adds a worktree of the specified repository to an existing feature directory.
 - `hibernate-orm`
 - `hibernate-reactive`
 - `hibernate-tools`
+- `hibernate-models`
 
 ## Prerequisites
 
@@ -35,13 +36,17 @@ Adds a worktree of the specified repository to an existing feature directory.
    git worktree add -b <number> ~/git/hibernate/<number>/<repo> upstream/main
    ```
 
-3. **Set up Maven config** in the worktree:
-   Create or prepend to `~/git/hibernate/<number>/<repo>/.mvn/maven.config`:
-   ```
-   -Dmaven.repo.local=$HOME/git/hibernate/<number>/.m2
-   ```
-   If `.mvn/maven.config` already exists (from the repo), prepend the line.
+3. **Set up build config** in the worktree:
+   - **For Maven repos** (quarkus, hibernate-tools): Create or prepend to `~/git/hibernate/<number>/<repo>/.mvn/maven.config`:
+     ```
+     -Dmaven.repo.local=$HOME/git/hibernate/<number>/.m2
+     ```
+     If `.mvn/maven.config` already exists (from the repo), prepend the line.
+   - **For Gradle repos** (hibernate-orm, hibernate-reactive, hibernate-models): No `.mvn/maven.config` needed. To publish SNAPSHOTs to the feature's `.m2`, use:
+     ```
+     ./gradlew publishToMavenLocal -Dmaven.repo.local=$HOME/git/hibernate/<number>/.m2 -x test
+     ```
 
-4. **Copy Maven safety extension** into `~/git/hibernate/<number>/<repo>/.mvn/`.
+4. **Copy Maven safety extension** into `~/git/hibernate/<number>/<repo>/.mvn/` (Maven repos only, skip for Gradle repos).
 
 5. **Confirm**: Print the updated feature directory contents.
