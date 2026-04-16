@@ -34,7 +34,70 @@ fi
 cd "$QUARKUS_DIR"
 
 echo ">>> Building hibernate-related modules (skip tests) in $QUARKUS_DIR ..."
-mvnd -pl extensions/hibernate-reactive/runtime,extensions/hibernate-reactive/deployment,extensions/hibernate-orm/runtime,extensions/hibernate-orm/deployment,extensions/panache/hibernate-reactive-panache-common/runtime,extensions/panache/hibernate-reactive-panache-common/deployment,extensions/panache/hibernate-reactive-panache/runtime,extensions/panache/hibernate-reactive-panache/deployment,extensions/spring-data-jpa/runtime,extensions/spring-data-jpa/deployment,integration-tests/hibernate-reactive-postgresql,integration-tests/hibernate-reactive-panache,integration-tests/smallrye-context-propagation,integration-tests/devtools install -DskipTests
+mvnd -pl extensions/hibernate-orm/runtime,\
+extensions/hibernate-orm/deployment,\
+extensions/hibernate-reactive/runtime,\
+extensions/hibernate-reactive/deployment,\
+extensions/panache/hibernate-reactive-panache-common/runtime,\
+extensions/panache/hibernate-reactive-panache-common/deployment,\
+extensions/panache/hibernate-reactive-panache/runtime,\
+extensions/panache/hibernate-reactive-panache/deployment,\
+extensions/spring-data-jpa/runtime,\
+extensions/spring-data-jpa/deployment,\
+integration-tests/jpa,\
+integration-tests/jpa-h2,\
+integration-tests/jpa-h2-embedded,\
+integration-tests/jpa-postgresql,\
+integration-tests/jpa-postgresql-withxml,\
+integration-tests/jpa-mysql,\
+integration-tests/jpa-mariadb,\
+integration-tests/jpa-mssql,\
+integration-tests/jpa-oracle,\
+integration-tests/jpa-db2,\
+integration-tests/jpa-mapping-xml,\
+integration-tests/jpa-without-entity,\
+integration-tests/hibernate-orm-data,\
+integration-tests/hibernate-orm-tenancy/datasource,\
+integration-tests/hibernate-orm-tenancy/connection-resolver,\
+integration-tests/hibernate-orm-tenancy/connection-resolver-legacy-qualifiers,\
+integration-tests/hibernate-orm-tenancy/schema,\
+integration-tests/hibernate-orm-tenancy/schema-mariadb,\
+integration-tests/hibernate-orm-tenancy/discriminator,\
+integration-tests/hibernate-search-orm-elasticsearch-tenancy,\
+integration-tests/hibernate-reactive-postgresql,\
+integration-tests/hibernate-reactive-panache,\
+integration-tests/smallrye-context-propagation,\
+integration-tests/devtools \
+install -DskipTests
 
 echo ">>> Running verification tests..."
-mvnd --serial -pl extensions/hibernate-reactive/deployment,extensions/hibernate-orm/deployment,extensions/panache/hibernate-reactive-panache-common/deployment,extensions/panache/hibernate-reactive-panache/deployment,extensions/spring-data-jpa/deployment,integration-tests/hibernate-reactive-postgresql,integration-tests/hibernate-reactive-panache,integration-tests/smallrye-context-propagation,integration-tests/devtools verify -Dtest-containers=true
+mvnd --serial -pl extensions/hibernate-orm/deployment,\
+extensions/hibernate-reactive/deployment,\
+extensions/panache/hibernate-reactive-panache-common/deployment,\
+extensions/panache/hibernate-reactive-panache/deployment,\
+extensions/spring-data-jpa/deployment,\
+integration-tests/jpa,\
+integration-tests/jpa-h2,\
+integration-tests/jpa-h2-embedded,\
+integration-tests/jpa-postgresql,\
+integration-tests/jpa-postgresql-withxml,\
+integration-tests/jpa-mysql,\
+integration-tests/jpa-mariadb,\
+integration-tests/jpa-mssql,\
+integration-tests/jpa-oracle,\
+integration-tests/jpa-db2,\
+integration-tests/jpa-mapping-xml,\
+integration-tests/jpa-without-entity,\
+integration-tests/hibernate-orm-data,\
+integration-tests/hibernate-orm-tenancy/datasource,\
+integration-tests/hibernate-orm-tenancy/connection-resolver,\
+integration-tests/hibernate-orm-tenancy/connection-resolver-legacy-qualifiers,\
+integration-tests/hibernate-orm-tenancy/schema,\
+integration-tests/hibernate-orm-tenancy/schema-mariadb,\
+integration-tests/hibernate-orm-tenancy/discriminator,\
+integration-tests/hibernate-search-orm-elasticsearch-tenancy,\
+integration-tests/hibernate-reactive-postgresql,\
+integration-tests/hibernate-reactive-panache,\
+integration-tests/smallrye-context-propagation,\
+integration-tests/devtools \
+verify -Dtest-containers=true

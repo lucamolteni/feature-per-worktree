@@ -67,6 +67,7 @@ refresh_cycle() {
     reset_repo quarkus
     reset_repo hibernate-orm
     reset_repo hibernate-reactive
+    reset_repo hibernate-search
 
     # 2. Build Hibernate ORM and Reactive (Gradle → publishToMavenLocal)
     build_gradle_repo hibernate-orm
