@@ -33,7 +33,8 @@ fi
 
 cd "$QUARKUS_DIR"
 
-# jpa-oracle, jpa-db2 and jpa-mysql excluded: Docker images don't work on Mac ARM
+# JPA DB-specific tests limited to PostgreSQL and H2; other DBs (Oracle, DB2, MySQL,
+# MariaDB, MSSQL) rely on CI — Docker images are unreliable on Mac ARM
 echo ">>> Building hibernate-related modules (skip tests) in $QUARKUS_DIR ..."
 mvnd -pl extensions/hibernate-orm/runtime,\
 extensions/hibernate-orm/deployment,\
@@ -50,18 +51,11 @@ integration-tests/jpa-h2,\
 integration-tests/jpa-h2-embedded,\
 integration-tests/jpa-postgresql,\
 integration-tests/jpa-postgresql-withxml,\
-integration-tests/jpa-mariadb,\
-integration-tests/jpa-mssql,\
 integration-tests/jpa-mapping-xml,\
 integration-tests/jpa-without-entity,\
 integration-tests/hibernate-orm-data,\
-integration-tests/hibernate-orm-tenancy/datasource,\
-integration-tests/hibernate-orm-tenancy/connection-resolver,\
-integration-tests/hibernate-orm-tenancy/connection-resolver-legacy-qualifiers,\
 integration-tests/hibernate-orm-tenancy/schema,\
-integration-tests/hibernate-orm-tenancy/schema-mariadb,\
 integration-tests/hibernate-orm-tenancy/discriminator,\
-integration-tests/hibernate-search-orm-elasticsearch-tenancy,\
 integration-tests/hibernate-reactive-postgresql,\
 integration-tests/hibernate-reactive-panache,\
 integration-tests/smallrye-context-propagation,\
@@ -79,18 +73,11 @@ integration-tests/jpa-h2,\
 integration-tests/jpa-h2-embedded,\
 integration-tests/jpa-postgresql,\
 integration-tests/jpa-postgresql-withxml,\
-integration-tests/jpa-mariadb,\
-integration-tests/jpa-mssql,\
 integration-tests/jpa-mapping-xml,\
 integration-tests/jpa-without-entity,\
 integration-tests/hibernate-orm-data,\
-integration-tests/hibernate-orm-tenancy/datasource,\
-integration-tests/hibernate-orm-tenancy/connection-resolver,\
-integration-tests/hibernate-orm-tenancy/connection-resolver-legacy-qualifiers,\
 integration-tests/hibernate-orm-tenancy/schema,\
-integration-tests/hibernate-orm-tenancy/schema-mariadb,\
 integration-tests/hibernate-orm-tenancy/discriminator,\
-integration-tests/hibernate-search-orm-elasticsearch-tenancy,\
 integration-tests/hibernate-reactive-postgresql,\
 integration-tests/hibernate-reactive-panache,\
 integration-tests/smallrye-context-propagation,\
