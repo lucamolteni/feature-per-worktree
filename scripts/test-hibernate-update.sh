@@ -33,7 +33,7 @@ fi
 
 cd "$QUARKUS_DIR"
 
-# jpa-oracle and jpa-db2 excluded: Docker images don't work on Mac ARM
+# jpa-oracle, jpa-db2 and jpa-mysql excluded: Docker images don't work on Mac ARM
 echo ">>> Building hibernate-related modules (skip tests) in $QUARKUS_DIR ..."
 mvnd -pl extensions/hibernate-orm/runtime,\
 extensions/hibernate-orm/deployment,\
@@ -50,7 +50,6 @@ integration-tests/jpa-h2,\
 integration-tests/jpa-h2-embedded,\
 integration-tests/jpa-postgresql,\
 integration-tests/jpa-postgresql-withxml,\
-integration-tests/jpa-mysql,\
 integration-tests/jpa-mariadb,\
 integration-tests/jpa-mssql,\
 integration-tests/jpa-mapping-xml,\
@@ -80,7 +79,6 @@ integration-tests/jpa-h2,\
 integration-tests/jpa-h2-embedded,\
 integration-tests/jpa-postgresql,\
 integration-tests/jpa-postgresql-withxml,\
-integration-tests/jpa-mysql,\
 integration-tests/jpa-mariadb,\
 integration-tests/jpa-mssql,\
 integration-tests/jpa-mapping-xml,\
