@@ -53,7 +53,7 @@ integration-tests/jpa-mysql,\
 integration-tests/jpa-mariadb,\
 integration-tests/jpa-mssql,\
 integration-tests/jpa-oracle,\
-integration-tests/jpa-db2,\
+# jpa-db2 excluded: DB2 Docker image doesn't work on Mac ARM
 integration-tests/jpa-mapping-xml,\
 integration-tests/jpa-without-entity,\
 integration-tests/hibernate-orm-data,\
@@ -85,7 +85,7 @@ integration-tests/jpa-mysql,\
 integration-tests/jpa-mariadb,\
 integration-tests/jpa-mssql,\
 integration-tests/jpa-oracle,\
-integration-tests/jpa-db2,\
+# jpa-db2 excluded: DB2 Docker image doesn't work on Mac ARM
 integration-tests/jpa-mapping-xml,\
 integration-tests/jpa-without-entity,\
 integration-tests/hibernate-orm-data,\
