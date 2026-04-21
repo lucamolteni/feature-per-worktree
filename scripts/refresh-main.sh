@@ -20,6 +20,15 @@ reset_repo() {
 
     [[ -d "$dir" ]] || { log "SKIP $repo — not cloned"; return 0; }
 
+    # Check for stale index.lock
+    local lock="$dir/.git/index.lock"
+    if [[ -f "$lock" ]]; then
+        log "ERROR: $repo has a stale index.lock file."
+        log "  If no git process is running for this repo, remove it with:"
+        log "    rm $lock"
+        return 1
+    fi
+
     log "Resetting $repo to upstream/main..."
     cd "$dir"
     git fetch upstream
