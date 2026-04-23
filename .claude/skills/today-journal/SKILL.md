@@ -1,13 +1,13 @@
 ---
 name: today-journal
-description: Use when the user wants a quick two-line summary of today's work from journal entries
+description: Use when the user wants a quick summary of today's work from journal entries
 ---
 
 # Today Journal
 
 Usage: `/today-journal`
 
-Produces a two-line summary of today's work across all features.
+Produces a bullet-point summary of today's work across all features.
 
 ## Steps
 
@@ -26,12 +26,28 @@ Produces a two-line summary of today's work across all features.
 
 3. Read all matching journal files. If none exist, say so and stop.
 
-4. Produce the summary **grouped by feature**, with a few bullet points per feature. The summary should:
-   - Have a header per feature (e.g., "QUARKUS-48005", "QUARKUS-53413", or the archived feature name)
+4. Produce the summary using this format:
+
+```
+# YYYY-MM-DD
+
+- QUARKUS-48005:
+  - First bullet point about what was done
+  - Second bullet point
+  - Third bullet point
+- QUARKUS-53413:
+  - First bullet point
+  - Second bullet point
+```
+
+   The summary should:
+   - Use a top-level `#` heading with the date
+   - Use a top-level bullet per feature (e.g., `- QUARKUS-48005:`)
+   - Use indented sub-bullets for each key activity
    - Cover all entries from all features, not just the latest one
    - Be concrete: mention what was built, fixed, refactored, or discovered
 
-5. Copy the two-line summary to the clipboard:
+5. Copy the summary to the clipboard:
    ```bash
    echo "<summary>" | pbcopy
    ```
