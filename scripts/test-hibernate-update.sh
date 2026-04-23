@@ -13,18 +13,25 @@ fi
 
 WORKSPACE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 if [ "$1" = "." ]; then
-    # Resolve current directory, then walk up to find the feature root (parent of quarkus/)
-    FEATURE_DIR="$(pwd)"
-    while [ "$FEATURE_DIR" != "$WORKSPACE_ROOT" ] && [ "$FEATURE_DIR" != "/" ]; do
-        if [ -d "$FEATURE_DIR/quarkus" ]; then
-            break
-        fi
-        FEATURE_DIR="$(dirname "$FEATURE_DIR")"
-    done
+    RESOLVED_DIR="$(pwd)"
+    # If the current directory is itself a Quarkus checkout, use it directly
+    if [ -f "$RESOLVED_DIR/extensions/hibernate-orm/pom.xml" ]; then
+        QUARKUS_DIR="$RESOLVED_DIR"
+    else
+        # Walk up to find the feature root (parent of quarkus/)
+        FEATURE_DIR="$RESOLVED_DIR"
+        while [ "$FEATURE_DIR" != "$WORKSPACE_ROOT" ] && [ "$FEATURE_DIR" != "/" ]; do
+            if [ -d "$FEATURE_DIR/quarkus" ]; then
+                break
+            fi
+            FEATURE_DIR="$(dirname "$FEATURE_DIR")"
+        done
+        QUARKUS_DIR="$FEATURE_DIR/quarkus"
+    fi
 else
     FEATURE_DIR="$WORKSPACE_ROOT/$1"
+    QUARKUS_DIR="$FEATURE_DIR/quarkus"
 fi
-QUARKUS_DIR="$FEATURE_DIR/quarkus"
 
 if [ ! -d "$QUARKUS_DIR" ]; then
     echo "ERROR: $QUARKUS_DIR does not exist"
