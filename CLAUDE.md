@@ -138,6 +138,14 @@ When investigating how something works — a Quarkus extension, a Hibernate clas
 
 The only time JAR inspection is appropriate is for third-party dependencies that are not checked out locally (e.g., a library not in this workspace).
 
+## GitHub CLI (`gh`) and TLS
+
+The `gh` CLI fails with TLS certificate errors in the sandbox. Use `curl -sk` against the GitHub API instead:
+
+```bash
+curl -sk "https://api.github.com/repos/quarkusio/quarkus/pulls/53761/comments" | python3 -c "import sys,json; ..."
+```
+
 ## Git Structure of This Repo
 
 This root directory (`~/git/hibernate/`) is its own git repo containing:
