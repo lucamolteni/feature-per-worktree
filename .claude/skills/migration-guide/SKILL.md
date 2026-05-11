@@ -11,9 +11,9 @@ Generates a Quarkus migration guide entry in asciidoc format, ready to be copied
 
 ## Instructions
 
-1. Clone the Quarkus wiki repo and read earlier migration guide files to match style:
+1. Clone the Quarkus wiki repo into the feature directory and read earlier migration guide files to match style:
    ```bash
-   git clone --depth 1 https://github.com/quarkusio/quarkus.wiki.git /tmp/quarkus-wiki
+   git clone --depth 1 https://github.com/quarkusio/quarkus.wiki.git ~/git/hibernate/<feature>/quarkus-wiki
    ```
    Read files like `Migration-Guide-3.26.asciidoc` for style reference. This is much faster than web searches.
 
