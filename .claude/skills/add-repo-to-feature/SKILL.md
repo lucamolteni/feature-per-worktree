@@ -47,6 +47,4 @@ Adds a worktree of the specified repository to an existing feature directory.
      ./gradlew publishToMavenLocal -Dmaven.repo.local=$HOME/git/hibernate/<number>/.m2 -x test
      ```
 
-4. **Copy Maven safety extension** into `~/git/hibernate/<number>/<repo>/.mvn/` (Maven repos only, skip for Gradle repos).
-
-5. **Confirm**: Print the updated feature directory contents.
+4. **Confirm**: Print the updated feature directory contents.

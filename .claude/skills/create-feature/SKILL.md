@@ -54,22 +54,20 @@ Creates a feature directory with a Quarkus worktree and an isolated `.m2` seeded
    ```
    If `.mvn/maven.config` already exists (from the repo), prepend the line.
 
-6. **Copy Maven safety extension** into `~/git/hibernate/<name>/quarkus/.mvn/` (symlink or copy the extension jar from the orchestration repo).
-
-7. **Build Quarkus** into the feature's `.m2`:
+6. **Build Quarkus** into the feature's `.m2`:
    ```
    cd ~/git/hibernate/<name>/quarkus
    ~/git/hibernate/scripts/build-fast.sh
    ```
    (The `-Dmaven.repo.local` is already set via `.mvn/maven.config`.)
 
-8. **Verify SNAPSHOT artifacts were updated** using the shared script:
+7. **Verify SNAPSHOT artifacts were updated** using the shared script:
    ```
    ~/git/hibernate/scripts/print-snapshot-timestamps.sh ~/git/hibernate/<name>/.m2 after
    ```
    This prints a summary with jar count and timestamps to confirm the build populated the feature's `.m2`.
 
-9. **Confirm**: Print the feature directory contents and remind the user to configure IntelliJ IDEA before opening `~/git/hibernate/<name>/quarkus`:
+8. **Confirm**: Print the feature directory contents and remind the user to configure IntelliJ IDEA before opening `~/git/hibernate/<name>/quarkus`:
 
    **IntelliJ setup (required):**
    - **Local repository override**: Settings → Build → Build Tools → Maven → check "Override" on "Local repository" and set it to `~/git/hibernate/<name>/.m2`. IntelliJ does not respect `-Dmaven.repo.local` from `.mvn/maven.config` for plugin resolution during import.

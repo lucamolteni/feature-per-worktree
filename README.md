@@ -25,11 +25,16 @@ A `main/` directory always tracks upstream and has pre-built SNAPSHOTs ready for
 │   ├── quarkus/
 │   ├── hibernate-orm/
 │   ├── hibernate-reactive/
-│   └── .m2/                     # pre-built SNAPSHOTs, always fresh
+│   ├── hibernate-tools/
+│   ├── hibernate-models/
+│   ├── hibernate-search/
+│   └── quarkus-wiki/            # reference only
 ├── 3223/                        # feature QUARKUS-3223
 │   ├── quarkus/                 # worktree from main/quarkus
 │   ├── hibernate-orm/           # worktree, added on demand
-│   └── .m2/                     # seeded from main/.m2 via hardlinks
+│   ├── .m2/                     # seeded from ~/.m2 via hardlinks
+│   └── journal/                 # daily work journal
+├── journal/                     # archived journals from completed features
 ├── 4567/                        # another feature
 │   └── ...
 ```
@@ -38,7 +43,7 @@ A `main/` directory always tracks upstream and has pre-built SNAPSHOTs ready for
 
 ### Dependency Isolation via Hardlinked `.m2`
 
-When a feature directory is created, its `.m2` is seeded from `main/.m2` using `rsync --link-dest`. This creates hardlinks — the copy is instant and uses near-zero extra disk space. When you rebuild a SNAPSHOT in your feature, only the changed jars diverge and consume real space.
+When a feature directory is created, its `.m2` is seeded from `~/.m2/repository` using `rsync --link-dest`. This creates hardlinks — the copy is instant and uses near-zero extra disk space. When you rebuild a SNAPSHOT in your feature, only the changed jars diverge and consume real space.
 
 Every worktree has a `.mvn/maven.config` with `-Dmaven.repo.local` pointing to its feature's `.m2`, so Maven never touches `~/.m2`.
 
@@ -67,10 +72,18 @@ This repo is designed to be used with [Claude Code](https://claude.ai/code). The
 | Skill                                  | Description                                              |
 |----------------------------------------|----------------------------------------------------------|
 | `/init-workspace`                      | Clone all repos into `main/`, set up remotes, do builds  |
-| `/create-feature <name>`               | Create a feature directory with worktree and isolated `.m2` |
+| `/create-feature <number>`             | Create a feature directory with worktree and isolated `.m2` |
 | `/add-repo-to-feature <repo> <number>` | Add another repo's worktree to a feature                 |
 | `/delete-feature <number>`             | Clean up worktrees and delete a feature directory        |
 | `/refresh-main`                        | Start the hourly upstream refresh loop                   |
+| `/hibernate-update`                    | Bump Hibernate ORM/Reactive/Search/Tools versions in Quarkus |
+| `/migration-guide`                     | Generate a Quarkus migration guide entry for a Hibernate upgrade |
+| `/write-journal`                       | Write a daily work journal entry for the current feature |
+| `/today-journal`                       | Quick summary of today's work from journal entries       |
+
+## Agents
+
+The `.agents/` directory contains agent skills for use with AI coding assistants beyond Claude Code. See [AGENTS.md](AGENTS.md) for details.
 
 ## Adapting to Your Projects
 
