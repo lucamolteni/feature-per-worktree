@@ -105,6 +105,7 @@ The Elasticsearch Java client was also upgraded from <old> to <new>.
 
 ## Key Rules
 
+- **Only cover breaking changes and behavioral differences.** Do not include new features — those belong in release notes, not the migration guide.
 - This is a **synthesis**, not a copy of the upstream guide. Be concise.
 - Use asciidoc link syntax: `https://url[link text]`
 - Every bullet point should link to the relevant upstream migration guide section with the correct anchor.
