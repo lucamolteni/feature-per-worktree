@@ -138,6 +138,10 @@ When investigating how something works — a Quarkus extension, a Hibernate clas
 
 The only time JAR inspection is appropriate is for third-party dependencies that are not checked out locally (e.g., a library not in this workspace).
 
+## Creating PRs on hibernate/hibernate-orm
+
+**Always** read `.claude/skills/hibernate-orm-pr/SKILL.md` and copy the license block verbatim from there. Never hand-write the license agreement — the `hibernate-github-bot` will reject the PR if it doesn't match exactly.
+
 ## GitHub CLI (`gh`) and TLS
 
 The `gh` CLI fails with TLS certificate errors in the sandbox. Use `curl -sk` against the GitHub API instead:
