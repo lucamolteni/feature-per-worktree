@@ -39,10 +39,10 @@ fi
 
 cd "$QUARKUS_DIR"
 
-if [ -d "extensions/quarkus-data/quarkus-data-hibernate" ]; then
+if [ -d "extensions/data/hibernate" ]; then
+    DATA_DIR="extensions/data/hibernate"
+elif [ -d "extensions/quarkus-data/quarkus-data-hibernate" ]; then
     DATA_DIR="extensions/quarkus-data/quarkus-data-hibernate"
-elif [ -d "extensions/quarkus-data/quarkus-data-jpa" ]; then
-    DATA_DIR="extensions/quarkus-data/quarkus-data-jpa"
 elif [ -d "extensions/panache/hibernate-panache-next" ]; then
     DATA_DIR="extensions/panache/hibernate-panache-next"
 else
@@ -56,10 +56,10 @@ mvnd -f "$DATA_DIR" install -DskipTests
 echo ">>> Running tests ($DATA_DIR) ..."
 mvnd --serial -f "$DATA_DIR" verify -Dtest-containers=true
 
-if [ -d "integration-tests/quarkus-data-hibernate" ]; then
+if [ -d "integration-tests/data-hibernate" ]; then
+    IT_DIR="integration-tests/data-hibernate"
+elif [ -d "integration-tests/quarkus-data-hibernate" ]; then
     IT_DIR="integration-tests/quarkus-data-hibernate"
-elif [ -d "integration-tests/quarkus-data-jpa" ]; then
-    IT_DIR="integration-tests/quarkus-data-jpa"
 elif [ -d "integration-tests/hibernate-panache-next" ]; then
     IT_DIR="integration-tests/hibernate-panache-next"
 else
