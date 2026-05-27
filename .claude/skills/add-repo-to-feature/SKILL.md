@@ -16,6 +16,7 @@ Adds a worktree of the specified repository to an existing feature directory.
 - `hibernate-reactive`
 - `hibernate-tools`
 - `hibernate-models`
+- `quarkus-website`
 
 ## Prerequisites
 
@@ -46,5 +47,6 @@ Adds a worktree of the specified repository to an existing feature directory.
      ```
      ./gradlew publishToMavenLocal -Dmaven.repo.local=$HOME/git/hibernate/<number>/.m2 -x test
      ```
+   - **For non-build repos** (quarkus-website): No build config needed — just create the worktree.
 
 4. **Confirm**: Print the updated feature directory contents.

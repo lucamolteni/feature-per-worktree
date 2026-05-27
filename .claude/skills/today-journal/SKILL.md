@@ -47,9 +47,14 @@ Produces a bullet-point summary of today's work across all features.
    - Cover all entries from all features, not just the latest one
    - Be concrete: mention what was built, fixed, refactored, or discovered
 
-5. Copy the summary to the clipboard:
+5. Write the summary to a temp file and give the user the command to copy it:
    ```bash
-   echo "<summary>" | pbcopy
+   cat > $TMPDIR/today-journal.md <<'EOF'
+   <summary>
+   EOF
    ```
 
-6. Print the summary and confirm it was copied to the clipboard.
+6. Print the summary, then tell the user to run:
+   ```
+   pbcopy < $TMPDIR/today-journal.md
+   ```

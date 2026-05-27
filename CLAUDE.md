@@ -15,6 +15,7 @@ This root folder is a **git repository** itself, but contains no source code —
 │   ├── hibernate-tools/
 │   ├── hibernate-models/
 │   ├── hibernate-search/
+│   ├── quarkus-website/          # quarkusio.github.io — blog posts, guides
 │   └── quarkus-wiki/            # reference only, lives only in main/
 ├── 3223/                        # feature QUARKUS-3223
 │   ├── quarkus/                 # worktree from main/quarkus, branch QUARKUS-3223
@@ -41,6 +42,7 @@ All repos follow the same remote convention:
 | hibernate-tools      | `git@github.com:hibernate/hibernate-tools.git`           | `git@github.com:$GITHUB_USERNAME/hibernate-tools.git`        |
 | hibernate-models     | `git@github.com:hibernate/hibernate-models.git`          | `git@github.com:$GITHUB_USERNAME/hibernate-models.git`       |
 | hibernate-search     | `git@github.com:hibernate/hibernate-search.git`          | `git@github.com:$GITHUB_USERNAME/hibernate-search.git`       |
+| quarkus-website      | `git@github.com:quarkusio/quarkusio.github.io.git`       | `git@github.com:$GITHUB_USERNAME/quarkusio.github.io.git`    |
 | quarkus-wiki         | TBD                                                      | TBD                                                          |
 
 ## The `main/` folder
@@ -127,6 +129,7 @@ When investigating how something works — a Quarkus extension, a Hibernate clas
 - `main/hibernate-tools/` — upstream Hibernate Tools source
 - `main/hibernate-models/` — upstream Hibernate Models source
 - `main/hibernate-search/` — upstream Hibernate Search source
+- `main/quarkus-website/` — upstream Quarkus website (blog posts, guides)
 - `<feature>/quarkus/` — feature branch Quarkus source
 - `<feature>/hibernate-orm/` — feature branch Hibernate ORM source (if added)
 - `<feature>/hibernate-models/` — feature branch Hibernate Models source (if added)

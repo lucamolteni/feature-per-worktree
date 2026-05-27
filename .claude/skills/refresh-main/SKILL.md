@@ -14,7 +14,7 @@ Creates and runs a long-running bash script that keeps `main/` in sync with upst
 
 1. **Fetch and reset all repos**:
    ```bash
-   for repo in quarkus hibernate-orm hibernate-reactive; do
+   for repo in quarkus hibernate-orm hibernate-reactive quarkus-website; do
      cd ~/git/hibernate/main/$repo
      git fetch upstream
      git reset --hard upstream/main
