@@ -42,6 +42,8 @@ Generates Maven artifact relocations when Quarkus extensions are renamed. Produc
    - `Relocation.ofGroupId(old, newGroup, version)` -- only groupId changed
    - `Relocation.of(old, newGroup, newArtifact, version)` -- both changed
 
+   **Important**: The version passed here is the **upcoming Quarkus release** where the rename ships. This version controls the migration guide URL in the generated relocation POMs (e.g., `Migration-Guide-3.37`). It must match the version used for the quarkus-updates recipe file in step 5. Ask the user which version to use if unclear.
+
 3. **Run the generator**:
    ```bash
    cd ~/git/hibernate/<number>/relocations/relocations
