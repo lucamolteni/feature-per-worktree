@@ -17,6 +17,7 @@ Initialize the `~/git/hibernate/main/` directory with all repositories. Builds i
    - `git clone git@github.com:$GITHUB_USERNAME/hibernate-orm.git main/hibernate-orm`
    - `git clone git@github.com:$GITHUB_USERNAME/hibernate-reactive.git main/hibernate-reactive`
    - `git clone git@github.com:$GITHUB_USERNAME/quarkusio.github.io.git main/quarkus-website`
+   - `git clone git@github.com:$GITHUB_USERNAME/quarkus-updates.git main/quarkus-updates`
    - Clone quarkus-wiki (URL TBD)
 
 3. For each cloned repo, add the upstream remote:
@@ -24,6 +25,7 @@ Initialize the `~/git/hibernate/main/` directory with all repositories. Builds i
    - `cd main/hibernate-orm && git remote add upstream git@github.com:hibernate/hibernate-orm.git`
    - `cd main/hibernate-reactive && git remote add upstream git@github.com:hibernate/hibernate-reactive.git`
    - `cd main/quarkus-website && git remote add upstream git@github.com:quarkusio/quarkusio.github.io.git`
+   - `cd main/quarkus-updates && git remote add upstream git@github.com:quarkusio/quarkus-updates.git`
 
 4. Fetch upstream and reset to upstream/main for each repo:
    ```

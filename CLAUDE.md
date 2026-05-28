@@ -16,6 +16,7 @@ This root folder is a **git repository** itself, but contains no source code —
 │   ├── hibernate-models/
 │   ├── hibernate-search/
 │   ├── quarkus-website/          # quarkusio.github.io — blog posts, guides
+│   ├── quarkus-updates/          # OpenRewrite recipes for Quarkus version migrations
 │   └── quarkus-wiki/            # reference only, lives only in main/
 ├── 3223/                        # feature QUARKUS-3223
 │   ├── quarkus/                 # worktree from main/quarkus, branch QUARKUS-3223
@@ -43,6 +44,7 @@ All repos follow the same remote convention:
 | hibernate-models     | `git@github.com:hibernate/hibernate-models.git`          | `git@github.com:$GITHUB_USERNAME/hibernate-models.git`       |
 | hibernate-search     | `git@github.com:hibernate/hibernate-search.git`          | `git@github.com:$GITHUB_USERNAME/hibernate-search.git`       |
 | quarkus-website      | `git@github.com:quarkusio/quarkusio.github.io.git`       | `git@github.com:$GITHUB_USERNAME/quarkusio.github.io.git`    |
+| quarkus-updates      | `git@github.com:quarkusio/quarkus-updates.git`           | `git@github.com:$GITHUB_USERNAME/quarkus-updates.git`        |
 | quarkus-wiki         | TBD                                                      | TBD                                                          |
 
 ## The `main/` folder

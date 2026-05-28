@@ -49,12 +49,12 @@ Produces a bullet-point summary of today's work across all features.
 
 5. Write the summary to a temp file and give the user the command to copy it:
    ```bash
-   cat > $TMPDIR/today-journal.md <<'EOF'
+   cat > /tmp/today-journal.md <<'EOF'
    <summary>
    EOF
    ```
 
 6. Print the summary, then tell the user to run:
    ```
-   pbcopy < $TMPDIR/today-journal.md
+   pbcopy < /tmp/today-journal.md
    ```
