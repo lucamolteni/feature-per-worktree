@@ -84,6 +84,22 @@ Generates Maven artifact relocations when Quarkus extensions are renamed. Produc
    ```
    If the quarkus-updates worktree does not exist, print the recipe YAML and tell the user to add it manually.
 
+   **Package and class renames**: If the rename also changed Java package names or class names of API types consumed by end users, add additional OpenRewrite recipes to the same file:
+   - To rename an entire package, use `org.openrewrite.java.ChangePackage`:
+     ```yaml
+     - org.openrewrite.java.ChangePackage:
+         oldPackageName: io.quarkus.old.package
+         newPackageName: io.quarkus.new.package
+         recursive: true
+     ```
+   - If individual class names also changed, use `org.openrewrite.java.ChangeType`:
+     ```yaml
+     - org.openrewrite.java.ChangeType:
+         oldFullyQualifiedTypeName: io.quarkus.old.package.OldClassName
+         newFullyQualifiedTypeName: io.quarkus.new.package.NewClassName
+     ```
+   Only include these for types that are considered public API and consumed by end users, not internal/deployment classes. Ask the user whether any packages or class names were renamed.
+
 6. **Update the migration guide wiki**. The generator prints two asciidoc tables — one for publicly consumed modules, one for extension developers. These must be added to the Quarkus migration guide wiki page at `https://github.com/quarkusio/quarkus/wiki/Migration-Guide-<quarkus-version>`. Print both tables and remind the user to paste them into the wiki under an appropriate section heading.
 
 7. **Summarize**. Print:
