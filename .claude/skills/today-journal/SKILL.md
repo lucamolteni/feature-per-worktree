@@ -47,14 +47,15 @@ Produces a bullet-point summary of today's work across all features.
    - Cover all entries from all features, not just the latest one
    - Be concrete: mention what was built, fixed, refactored, or discovered
 
-5. Write the summary to a temp file and give the user the command to copy it:
+5. Write the summary to a temp file. After writing, resolve the real path and give the user that absolute path:
    ```bash
-   cat > /tmp/today-journal.md <<'EOF'
+   cat > $TMPDIR/today-journal.md <<'EOF'
    <summary>
    EOF
+   JOURNAL_PATH=$(realpath $TMPDIR/today-journal.md)
    ```
 
-6. Print the summary, then tell the user to run:
+6. Print the summary, then tell the user to run using the resolved absolute path (NOT `$TMPDIR`):
    ```
-   pbcopy < /tmp/today-journal.md
+   pbcopy < /absolute/path/to/today-journal.md
    ```
