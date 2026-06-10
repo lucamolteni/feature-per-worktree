@@ -54,7 +54,7 @@ Follow the style of the raw asciidoc in the wiki repo. The heading structure use
 
 The Quarkus extension for Hibernate ORM was upgraded to Hibernate ORM <version>.
 
-Hibernate ORM <version> is for the most part backwards-compatible with Hibernate ORM <previous>. However, a few breaking changes are to be expected. Below are the ones most likely to affect existing applications.
+Hibernate ORM <version> includes several behavioral changes. Below are the ones most likely to affect existing applications.
 
 Refer to the https://docs.hibernate.org/orm/<version>/migration-guide/[Hibernate ORM <version> migration guide] for more information.
 
