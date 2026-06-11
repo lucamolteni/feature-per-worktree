@@ -40,10 +40,21 @@ fi
 
 cd "$QUARKUS_DIR"
 
+# Detect feature .m2 directory (parent of quarkus dir)
+FEATURE_M2="$(dirname "$QUARKUS_DIR")/.m2"
+REPO_LOCAL_FLAG=""
+if [ -d "$FEATURE_M2" ]; then
+    REPO_LOCAL_FLAG="-Dmaven.repo.local=$FEATURE_M2"
+    echo ">>> Using local repository: $FEATURE_M2"
+else
+    echo "ERROR: No feature .m2 found at $FEATURE_M2"
+    exit 1
+fi
+
 # JPA DB-specific tests limited to PostgreSQL and H2; other DBs (Oracle, DB2, MySQL,
 # MariaDB, MSSQL) rely on CI — Docker images are unreliable on Mac ARM
 echo ">>> Building hibernate-related modules (skip tests) in $QUARKUS_DIR ..."
-mvnd -pl extensions/hibernate-orm/runtime,\
+mvnd $REPO_LOCAL_FLAG -pl extensions/hibernate-orm/runtime,\
 extensions/hibernate-orm/deployment,\
 extensions/hibernate-reactive/runtime,\
 extensions/hibernate-reactive/deployment,\
@@ -51,6 +62,8 @@ extensions/panache/hibernate-reactive-panache-common/runtime,\
 extensions/panache/hibernate-reactive-panache-common/deployment,\
 extensions/panache/hibernate-reactive-panache/runtime,\
 extensions/panache/hibernate-reactive-panache/deployment,\
+extensions/panache/hibernate-reactive-panache-kotlin/runtime,\
+extensions/panache/hibernate-reactive-panache-kotlin/deployment,\
 extensions/spring-data-jpa/runtime,\
 extensions/spring-data-jpa/deployment,\
 integration-tests/jpa,\
@@ -65,15 +78,17 @@ integration-tests/hibernate-orm-tenancy/schema,\
 integration-tests/hibernate-orm-tenancy/discriminator,\
 integration-tests/hibernate-reactive-postgresql,\
 integration-tests/hibernate-reactive-panache,\
+integration-tests/hibernate-reactive-panache-kotlin,\
 integration-tests/smallrye-context-propagation,\
 integration-tests/devtools \
 install -DskipTests
 
 echo ">>> Running verification tests..."
-mvnd --serial -pl extensions/hibernate-orm/deployment,\
+mvnd $REPO_LOCAL_FLAG --serial -pl extensions/hibernate-orm/deployment,\
 extensions/hibernate-reactive/deployment,\
 extensions/panache/hibernate-reactive-panache-common/deployment,\
 extensions/panache/hibernate-reactive-panache/deployment,\
+extensions/panache/hibernate-reactive-panache-kotlin/deployment,\
 extensions/spring-data-jpa/deployment,\
 integration-tests/jpa,\
 integration-tests/jpa-h2,\
@@ -87,6 +102,7 @@ integration-tests/hibernate-orm-tenancy/schema,\
 integration-tests/hibernate-orm-tenancy/discriminator,\
 integration-tests/hibernate-reactive-postgresql,\
 integration-tests/hibernate-reactive-panache,\
+integration-tests/hibernate-reactive-panache-kotlin,\
 integration-tests/smallrye-context-propagation,\
 integration-tests/devtools \
 verify -Dtest-containers=true
