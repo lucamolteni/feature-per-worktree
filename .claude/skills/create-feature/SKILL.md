@@ -69,6 +69,11 @@ Creates a feature directory with a Quarkus worktree and an isolated `.m2` seeded
 
 8. **Confirm**: Print the feature directory contents and remind the user to configure IntelliJ IDEA before opening `~/git/hibernate/<name>/quarkus`:
 
-   **IntelliJ setup (required):**
+   **IntelliJ setup for Maven projects (Quarkus):**
    - **Local repository override**: Settings → Build → Build Tools → Maven → check "Override" on "Local repository" and set it to `~/git/hibernate/<name>/.m2`. IntelliJ does not respect `-Dmaven.repo.local` from `.mvn/maven.config` for plugin resolution during import.
    - **Disable `--release` flag**: Settings → Build → Compiler → Java Compiler → uncheck "Use '--release' option for cross-compilation (Java 9 and later)". Without this, Quarkus fails to compile because `--release` conflicts with `--add-exports` for internal JDK APIs.
+
+   **IntelliJ setup for Gradle projects (hibernate-orm, hibernate-reactive, hibernate-models):**
+   - Settings → Build, Execution, Deployment → Build Tools → Gradle:
+     - **Build and run using**: Gradle (Default) — keep this as Gradle, do NOT switch to IntelliJ IDEA.
+     - **Run tests using**: IntelliJ IDEA — switch this from Gradle to IntelliJ IDEA. Without this, running a single test from IDEA will run all tests via Gradle instead of just the selected one.

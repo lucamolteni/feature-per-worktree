@@ -50,4 +50,8 @@ Adds a worktree of the specified repository to an existing feature directory.
      ```
    - **For non-build repos** (quarkus-website, quarkus-updates): No build config needed — just create the worktree.
 
-4. **Confirm**: Print the updated feature directory contents.
+4. **Confirm**: Print the updated feature directory contents and remind the user about IntelliJ IDEA setup:
+
+   - **For Gradle repos** (hibernate-orm, hibernate-reactive, hibernate-models): Settings → Build, Execution, Deployment → Build Tools → Gradle:
+     - **Build and run using**: Gradle (Default) — keep this as Gradle, do NOT switch to IntelliJ IDEA.
+     - **Run tests using**: IntelliJ IDEA — switch this from Gradle to IntelliJ IDEA. Without this, running a single test from IDEA will run all tests via Gradle instead of just the selected one.
