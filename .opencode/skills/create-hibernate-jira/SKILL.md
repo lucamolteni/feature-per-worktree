@@ -1,3 +1,8 @@
+---
+name: create-hibernate-jira
+description: Create a bug issue on the Hibernate ORM Jira project
+---
+
 # Create Hibernate Jira Issue
 
 Usage: `/create-hibernate-jira <summary>`

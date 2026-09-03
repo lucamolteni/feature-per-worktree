@@ -1,6 +1,6 @@
 ---
 name: today-journal
-description: Use when the user wants a quick summary of today's work from journal entries
+description: Use when the user asks for today's journal, today's work summary, or invokes /today-journal; scan active feature and archived journal entries and write a concise summary
 ---
 
 # Today Journal
@@ -20,8 +20,9 @@ Produces a bullet-point summary of today's work across all features.
    - **Active features**: check `~/git/hibernate/*/journal/YYYY-MM-DD.md`
    - **Archived journals**: check `~/git/hibernate/journal/*/events/YYYY-MM-DD.md`
    ```bash
-   find ~/git/hibernate -maxdepth 3 -path '*/journal/*.md' -name "$(date +%Y-%m-%d).md"
-   find ~/git/hibernate/journal -maxdepth 3 -path '*/events/*.md' -name "$(date +%Y-%m-%d).md"
+   find ~/git/hibernate -type f -path '*/journal/*.md' -name "$(date +%Y-%m-%d).md" \
+     ! -path '~/git/hibernate/main/*'
+   find ~/git/hibernate/journal -type f -path '*/events/*.md' -name "$(date +%Y-%m-%d).md"
    ```
 
 3. Read all matching journal files. If none exist, say so and stop.
