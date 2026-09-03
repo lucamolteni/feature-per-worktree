@@ -1,0 +1,164 @@
+# Hibernate Workspace Orchestration
+
+This is the root directory for daily work. Claude is run from here and has access to all repos and feature branches.
+This root folder is a **git repository** itself, but contains no source code — only orchestration, scripts, and Claude config. All `main/` and feature directories (and their `.m2` dirs) should be in `.gitignore`.
+
+## Directory Structure
+
+```
+~/git/hibernate/
+├── CLAUDE.md
+├── main/                        # "real" clones, always at upstream/main
+│   ├── quarkus/                 # primary repo
+│   ├── hibernate-orm/
+│   ├── hibernate-reactive/
+│   ├── hibernate-tools/
+│   ├── hibernate-models/
+│   ├── hibernate-search/
+│   ├── quarkus-website/          # quarkusio.github.io — blog posts, guides
+│   ├── quarkus-updates/          # OpenRewrite recipes for Quarkus version migrations
+│   └── quarkus-wiki/            # reference only, lives only in main/
+├── 3223/                        # feature QUARKUS-3223
+│   ├── quarkus/                 # worktree from main/quarkus, branch QUARKUS-3223
+│   ├── hibernate-orm/           # worktree, added on demand
+│   ├── .m2/                     # seeded from ~/.m2 via hardlinks
+│   └── journal/                 # daily work journal
+├── 4567/                        # another feature
+│   └── ...
+├── journal/                     # archived journals from completed features
+│   └── 3223/
+│       ├── events/              # daily journal files
+│       └── summary-3223.md      # condensed summary
+```
+
+## Repositories
+
+All repos follow the same remote convention:
+
+| Repo                 | upstream (read-only)                                     | origin (fork)                                                |
+|----------------------|----------------------------------------------------------|--------------------------------------------------------------|
+| quarkus              | `git@github.com:quarkusio/quarkus.git`                   | `git@github.com:$GITHUB_USERNAME/quarkus.git`                |
+| hibernate-orm        | `git@github.com:hibernate/hibernate-orm.git`             | `git@github.com:$GITHUB_USERNAME/hibernate-orm.git`          |
+| hibernate-reactive   | `git@github.com:hibernate/hibernate-reactive.git`        | `git@github.com:$GITHUB_USERNAME/hibernate-reactive.git`     |
+| hibernate-tools      | `git@github.com:hibernate/hibernate-tools.git`           | `git@github.com:$GITHUB_USERNAME/hibernate-tools.git`        |
+| hibernate-models     | `git@github.com:hibernate/hibernate-models.git`          | `git@github.com:$GITHUB_USERNAME/hibernate-models.git`       |
+| hibernate-search     | `git@github.com:hibernate/hibernate-search.git`          | `git@github.com:$GITHUB_USERNAME/hibernate-search.git`       |
+| quarkus-website      | `git@github.com:quarkusio/quarkusio.github.io.git`       | `git@github.com:$GITHUB_USERNAME/quarkusio.github.io.git`    |
+| quarkus-updates      | `git@github.com:quarkusio/quarkus-updates.git`           | `git@github.com:$GITHUB_USERNAME/quarkus-updates.git`        |
+| quarkus-wiki         | TBD                                                      | TBD                                                          |
+
+## The `main/` folder
+
+- Contains the "real" clones of all repos (not worktrees).
+- Always tracks `upstream/main` — reset hourly via a bash script.
+- hibernate-orm, hibernate-reactive, and hibernate-models use Gradle. Their SNAPSHOTs are built via `./gradlew publishToMavenLocal -x test`. In feature directories, always pass `-Dmaven.repo.local=<feature>/.m2` so Gradle resolves and publishes to the feature's isolated local repo (e.g., `./gradlew publishToMavenLocal -x test -Dmaven.repo.local=/Users/lmolteni/git/hibernate/3223/.m2`).
+- Uses the global `~/.m2/repository` — no `-Dmaven.repo.local` override needed. `main/` is the source of truth and doesn't need isolation.
+- **Refresh script** is a long-running bash script (not a cron job). When executed, it loops: fetches upstream, resets all repos to `upstream/main`, rebuilds Quarkus (`scripts/build-fast.sh`), then sleeps for 1 hour and repeats. The user decides when to start/stop it.
+- Quarkus build uses `mvnd` (Maven Daemon) for faster parallel builds. `~/.m2` must always be ready for comparison.
+
+## Feature directories (e.g. `3223/`)
+
+- Named after the issue number (e.g., QUARKUS-3223 becomes `3223/`).
+- Created on demand with a skill.
+- Always contains a Quarkus worktree (all features involve Quarkus so far).
+- Other repos (hibernate-orm, hibernate-reactive) are added on demand via a separate skill.
+- Each feature has its own `.m2` directory, seeded from `~/.m2/repository` using `rsync --link-dest` (hardlinks).
+  - This is instant and uses near-zero extra disk space.
+  - Only rebuilt SNAPSHOT artifacts (io/quarkus/*, org/hibernate/*) diverge and use real space.
+  - Maven config (`.mvn/maven.config`) in each worktree points to the feature's `.m2` via `-Dmaven.repo.local`.
+
+## IntelliJ IDEA
+
+- Each repo in a feature is opened as a **separate IntelliJ project** (no multi-module).
+- Both `main/` and feature dirs must be openable in IDEA and able to run tests directly.
+- The per-feature `.m2` + `.mvn/maven.config` ensures IDEA uses the correct local repo.
+
+## A/B Comparison Workflow
+
+When in doubt about how something worked before a change:
+1. Open `main/quarkus` in IDEA (or run Maven there) — it has pre-built upstream SNAPSHOTs ready.
+2. Open `3223/quarkus` in IDEA — it has the feature branch with its own SNAPSHOTs.
+3. Both are independently buildable and testable without interfering with each other.
+
+## Maven Isolation: Feature builds must not pollute ~/.m2
+
+Feature worktrees must be configured so Maven **never** reads from or writes to the global `~/.m2`. This is enforced via `-Dmaven.repo.local=<feature>/.m2` in each worktree's `.mvn/maven.config`. The feature `.m2` is seeded from `~/.m2/repository` via hardlinks so all artifacts are available locally.
+
+`main/` repos use `~/.m2` directly (no override) since they are the source of truth.
+
+## Skills Needed
+
+1. **init-workspace** — Clone all repos into `main/`, set up remotes (origin + upstream), do initial Quarkus build into `~/.m2`.
+2. **create-feature** — e.g., "create feature 3223" → creates `3223/` dir, Quarkus worktree on branch `QUARKUS-3223`, seeds `.m2` from `~/.m2/repository` via hardlinks, sets up `.mvn/maven.config`.
+3. **add-repo-to-feature** — e.g., "add hibernate-orm to 3223" → creates worktree in `3223/hibernate-orm/` from `main/hibernate-orm`.
+4. **refresh-main** — Bash script for hourly loop: fetches upstream, resets all repos to upstream/main, rebuilds Quarkus into `~/.m2`.
+5. **delete-feature** — Cleans up worktrees (via `git worktree remove`) and deletes the feature directory + its `.m2`. Archives the journal to `journal/<feature>/` before deletion.
+6. **write-journal** — e.g., "/write-journal" → appends a daily journal entry for the current feature, capturing session context and git commits.
+
+## Shell Aliases
+
+Add to `~/.zshrc`:
+
+```bash
+alias build-fast="~/git/hibernate/scripts/build-fast.sh"
+alias build-docs="~/git/hibernate/scripts/build-docs.sh"
+alias format="~/git/hibernate/scripts/format.sh"
+alias local_repo='echo ">>> maven.repo.local: $(mvn help:evaluate -Dexpression=settings.localRepository -q -DforceStdout 2>/dev/null)"'
+alias qss="java -jar ${HOME}/git/quarkus/devtools/cli/target/quarkus-cli-999-SNAPSHOT-runner.jar"
+```
+
+- `build-fast` — full Quarkus build skipping tests, docs, and non-essential steps
+- `build-docs` — build with docs but skip tests
+- `format` — run source formatting only
+- `local_repo` — print the effective Maven local repository path (uses `mvn`, not `mvnd` — mvnd doesn't support `-q -DforceStdout` for `help:evaluate`)
+- `qss` — run Quarkus CLI from local SNAPSHOT build
+
+## Why Claude Runs From the Root Directory
+
+Claude is always launched from `~/git/hibernate/` (not from inside a repo). This is intentional:
+
+- **Cross-repo access**: Features often span multiple repos (e.g., Quarkus + Hibernate ORM). Running from the root means Claude can read and edit files across all of them without switching directories.
+- **Source code is always available**: All repos are checked out as full source trees under `main/` and feature directories. **Never unzip or extract JAR files to read source code** — the actual `.java` files are already on disk. For example, to understand a Hibernate ORM class, read `main/hibernate-orm/...` or `<feature>/hibernate-orm/...` directly, don't look inside `.m2` artifacts.
+- **Maven isolation awareness**: When running builds or Maven commands, always `cd` into the specific worktree first. The `.mvn/maven.config` in each worktree ensures the correct local repo is used.
+
+## Reading Source Code: Use the Repos, Not JARs
+
+When investigating how something works — a Quarkus extension, a Hibernate class, a dependency — **always read the source from the checked-out repositories first**:
+
+- `main/quarkus/` — upstream Quarkus source
+- `main/hibernate-orm/` — upstream Hibernate ORM source
+- `main/hibernate-reactive/` — upstream Hibernate Reactive source
+- `main/hibernate-tools/` — upstream Hibernate Tools source
+- `main/hibernate-models/` — upstream Hibernate Models source
+- `main/hibernate-search/` — upstream Hibernate Search source
+- `main/quarkus-website/` — upstream Quarkus website (blog posts, guides)
+- `<feature>/quarkus/` — feature branch Quarkus source
+- `<feature>/hibernate-orm/` — feature branch Hibernate ORM source (if added)
+- `<feature>/hibernate-models/` — feature branch Hibernate Models source (if added)
+
+**Do NOT**:
+- Extract or unzip JAR files from `.m2` to read class files
+- Use `jar tf` or `unzip` to inspect artifacts when the source repo is available
+- Decompile `.class` files when the `.java` source is right there in the worktree
+
+The only time JAR inspection is appropriate is for third-party dependencies that are not checked out locally (e.g., a library not in this workspace).
+
+## Creating PRs on hibernate/hibernate-orm
+
+**Always** read `.opencode/skills/hibernate-orm-pr/SKILL.md` and copy the license block verbatim from there. Never hand-write the license agreement — the `hibernate-github-bot` will reject the PR if it doesn't match exactly.
+
+## GitHub CLI (`gh`) and TLS
+
+The `gh` CLI fails with TLS certificate errors in the sandbox. Use `curl -sk` against the GitHub API instead:
+
+```bash
+curl -sk "https://api.github.com/repos/quarkusio/quarkus/pulls/53761/comments" | python3 -c "import sys,json; ..."
+```
+
+## Git Structure of This Repo
+
+This root directory (`~/git/hibernate/`) is its own git repo containing:
+- `CLAUDE.md` — this file
+- Scripts (refresh loop, maven safety check, etc.)
+- `.gitignore` — excludes `main/`, feature dirs (`[0-9]*/`), and `.m2/` directories
+- No source code
